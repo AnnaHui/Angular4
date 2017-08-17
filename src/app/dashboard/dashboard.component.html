@@ -1,0 +1,18 @@
+<h4 [textContent]='loadState'></h4>
+
+<!-- <input
+  [(ngModel)] = 'loadState'
+  type="text"
+  name=""
+  value=""> -->
+
+<input
+  type="text"
+  name=""
+  (input)='onUserFinish($event)'
+  [value]="loadState">
+
+<button class='btn btn-warning' (click)="onFinish()">Click!</button>
+
+<hr>
+<p>This is dashboardComponent</p>
