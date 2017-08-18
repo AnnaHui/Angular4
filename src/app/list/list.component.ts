@@ -18,9 +18,17 @@ export class ListComponent implements OnInit {
   // @Input () characters;
   // @Output () sideAssigned = new EventEmitter<{name: string, side: string}>();
   characters = [];
+
   activatedRoute: ActivatedRoute;
 
   swService: StarWarsService;
+
+  loadedSide = 'all';
+
+
+
+
+
 
   constructor( activatedRoute: ActivatedRoute, swService: StarWarsService ) {
     this.activatedRoute = activatedRoute;
@@ -31,6 +39,14 @@ export class ListComponent implements OnInit {
     this.activatedRoute.params.subscribe(
       (params) => {
         this.characters = this.swService.getCharacters(params.side);
+        this.loadedSide = params.side;
+      }
+    );
+
+    // use Rxjs and can change side
+    this.swService.charactersChange.subscribe(
+      () => {
+        this.characters = this.swService.getCharacters(this.loadedSide);
       }
     );
   }
