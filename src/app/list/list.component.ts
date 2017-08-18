@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
 
@@ -13,7 +13,7 @@ import { StarWarsService } from '../star-wars.service';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnDestroy {
 
   // @Input () characters;
   // @Output () sideAssigned = new EventEmitter<{name: string, side: string}>();
@@ -24,6 +24,10 @@ export class ListComponent implements OnInit {
   swService: StarWarsService;
 
   loadedSide = 'all';
+
+  // Managing Subscription
+  subscription;
+
 
 
 
@@ -44,16 +48,20 @@ export class ListComponent implements OnInit {
     );
 
     // use Rxjs and can change side
-    this.swService.charactersChange.subscribe(
+    this.subscription = this.swService.charactersChange.subscribe(
       () => {
         this.characters = this.swService.getCharacters(this.loadedSide);
       }
     );
-  }
 
+  }
 
   // onSideAssigned(chartInfo) {
   //   this.sideAssigned.emit(chartInfo);
   // }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
 }
