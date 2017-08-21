@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { random } from 'lodash';
+import { StarWarsService } from './star-wars.service';
+
 // npm install @types/lodash and hiddne this import, then add import { random } from 'lodash';;
 // import 'lodash';
 
@@ -20,12 +22,23 @@ import { random } from 'lodash';
 
 
 
-export class AppComponent {
-  title = 'Angular App';
+export class AppComponent implements OnInit {
+  // title = 'Angular App';
   number = 0;
 
   rootState = 'initComponent';
   rootItems = ['Apple', 'Bananas', 'Cherries'];
+
+
+
+  swService: StarWarsService;
+  constructor( swService: StarWarsService ) {
+    this.swService = swService;
+  }
+
+  ngOnInit() {
+    this.swService.fetchCharacters();
+  }
 
   onIncrease() {
     this.number = random(1, 10);

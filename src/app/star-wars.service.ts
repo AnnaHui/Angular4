@@ -6,14 +6,17 @@ import { Http, Response } from '@angular/http';
 
 import { Subject } from 'rxjs/Subject';
 
+import 'rxjs/add/operator/map';
+
 @Injectable()
 
 export class StarWarsService {
 
-  private characters = [
-    { name: 'Anna Liu', side: ''},
-    { name: 'Jerry Woo', side: ''},
-  ];
+  // private characters = [
+  //   { name: 'Anna Liu', side: ''},
+  //   { name: 'Jerry Woo', side: ''},
+  // ];
+  characters = [];
 
   private logservice: LogService;
   http: Http;
@@ -28,11 +31,39 @@ export class StarWarsService {
 
 
   fetchCharacters() {
-    this.http.get('https://swapi.co/api/people/').subscribe(
-      (response: Response) => {
-        console.log(response);
-      }
-    );
+
+    this.http.get('https://swapi.co/api/people/')
+        .map((response: Response) => {
+            const data = response.json();
+            const extractedChars = data.results;
+            const chars = extractedChars.map((char) => {
+              return { name: char.name, side: '' };
+            });
+            return chars;
+          }
+        )
+        .subscribe(
+          (data) => {
+            console.log(data);
+            this.characters = data;
+            this.charactersChange.next(); //visible in init side
+          }
+        );
+
+
+    // const myData = {description: 'Data I want to pass, could be any kind of data/ object'};
+    // this.http.post('https://swapi.co/api/people/', myData)
+    //     .map(
+    //       (response: Response) => {
+    //         return response.json();
+    //       }
+    //     )
+    //     .subscribe(
+    //       (transformedData: any) => {
+    //         console.log(transformedData);
+    //       }
+    //     );
+
   }
 
 
@@ -53,7 +84,7 @@ export class StarWarsService {
     });
 
     this.characters[pos].side = charInfo.side;
-    this.charactersChange.next();
+    this.charactersChange.next(); //visible in init side
     this.logservice.writeLog('Changeed side of ' + charInfo.name + ', new side :' + charInfo.side );
 
   }
