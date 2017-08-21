@@ -16,7 +16,7 @@ import { ItemComponent } from './item/item.component';
 
 import { StarWarsService } from './star-wars.service';
 import { LogService } from './log.service';
-import { CreateCharacterComponent } from './create-character/create-character.component';
+// import { CreateCharacterComponent } from './create-character/create-character.component';
 import { HeaderComponent } from './header/header.component';
 import { AppRoutingModule } from './app.routing.module';
 
@@ -33,7 +33,7 @@ import { AppRoutingModule } from './app.routing.module';
     TabsComponent,
     ListComponent,
     ItemComponent,
-    CreateCharacterComponent,
+    // CreateCharacterComponent,
     HeaderComponent
   ],
   imports: [
